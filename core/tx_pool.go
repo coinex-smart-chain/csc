@@ -49,6 +49,8 @@ const (
 	// more expensive to propagate; larger transactions also take more resources
 	// to validate whether they fit into the pool or not.
 	txMaxSize = 4 * txSlotSize // 128KB
+
+	MinimalPriceLimit = 100 * params.GWei
 )
 
 var (
@@ -156,7 +158,7 @@ var DefaultTxPoolConfig = TxPoolConfig{
 	Journal:   "transactions.rlp",
 	Rejournal: time.Hour,
 
-	PriceLimit: 1,
+	PriceLimit: MinimalPriceLimit,
 	PriceBump:  10,
 
 	AccountSlots: 16,
@@ -298,6 +300,10 @@ func NewTxPool(config TxPoolConfig, chainconfig *params.ChainConfig, chain block
 		if err := pool.journal.rotate(pool.local()); err != nil {
 			log.Warn("Failed to rotate transaction journal", "err", err)
 		}
+	}
+
+	if config.PriceLimit < MinimalPriceLimit {
+		pool.config.PriceLimit = MinimalPriceLimit
 	}
 
 	// Subscribe events from blockchain and start the main event loop.
@@ -536,8 +542,8 @@ func (pool *TxPool) validateTx(tx *types.Transaction, local bool) error {
 		return ErrInvalidSender
 	}
 	// Drop non-local transactions under our own minimal accepted gas price
-	local = local || pool.locals.contains(from) // account may be local even if the transaction arrived from the network
-	if !local && tx.GasPriceIntCmp(pool.gasPrice) < 0 {
+	//local = local || pool.locals.contains(from) // account may be local even if the transaction arrived from the network
+	if tx.GasPriceIntCmp(pool.gasPrice) < 0 {
 		return ErrUnderpriced
 	}
 	// Ensure the transaction adheres to nonce ordering
