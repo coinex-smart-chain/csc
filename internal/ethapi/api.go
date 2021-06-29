@@ -1941,6 +1941,10 @@ func checkTxFee(gasPrice *big.Int, gas uint64, cap float64) error {
 	if feeFloat > cap {
 		return fmt.Errorf("tx fee (%.2f ether) exceeds the configured cap (%.2f ether)", feeFloat, cap)
 	}
+
+	if gasPrice.Cmp(params.MinimalGasPrice) < 0 {
+		return fmt.Errorf("tx gas price (%v) less than 500gwei", gasPrice.Int64())
+	}
 	return nil
 }
 
