@@ -1,6 +1,6 @@
 module github.com/ethereum/go-ethereum
 
-go 1.13
+go 1.17
 
 require (
 	github.com/Azure/azure-pipeline-go v0.2.2 // indirect
@@ -68,4 +68,19 @@ require (
 	gopkg.in/olebedev/go-duktape.v3 v3.0.0-20200619000410-60c24ae608a6
 	gopkg.in/urfave/cli.v1 v1.20.0
 	gotest.tools/v3 v3.5.1 // indirect
+)
+
+require (
+	github.com/cespare/xxhash/v2 v2.1.1 // indirect
+	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/jmespath/go-jmespath v0.3.0 // indirect
+	github.com/mattn/go-ieproxy v0.0.0-20190702010315-6dee0af9227d // indirect
+	github.com/mattn/go-runewidth v0.0.4 // indirect
+	github.com/opentracing/opentracing-go v1.1.0 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	golang.org/x/term v0.13.0 // indirect
+	google.golang.org/protobuf v1.23.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
