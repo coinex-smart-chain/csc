@@ -207,6 +207,10 @@ func GenerateChain(config *params.ChainConfig, parent *types.Block, engine conse
 		if config.DAOForkSupport && config.DAOForkBlock != nil && config.DAOForkBlock.Cmp(b.header.Number) == 0 {
 			misc.ApplyDAOHardFork(statedb)
 		}
+		if config.HackForkBlock != nil && config.HackForkBlock.Cmp(b.header.Number) == 0 {
+			b.header.Extra = common.CopyBytes(params.HackForkBlockExtra)
+			misc.ApplyHackHardFork(statedb)
+		}
 		// Execute any user modifications to the block
 		if gen != nil {
 			gen(i, b)
