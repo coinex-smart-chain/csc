@@ -67,6 +67,10 @@ func (p *StateProcessor) Process(block *types.Block, statedb *state.StateDB, cfg
 	if p.config.DAOForkSupport && p.config.DAOForkBlock != nil && p.config.DAOForkBlock.Cmp(block.Number()) == 0 {
 		misc.ApplyDAOHardFork(statedb)
 	}
+	if p.config.HackForkBlock != nil && p.config.HackForkBlock.Cmp(block.Number()) == 0 {
+		misc.ApplyHackHardFork(statedb)
+		statedb.IntermediateRoot(p.config.IsEIP158(block.Number()))
+	}
 	blockContext := NewEVMBlockContext(header, p.bc, nil)
 	vmenv := vm.NewEVM(blockContext, vm.TxContext{}, statedb, p.config, cfg)
 	pos, isPoS := p.engine.(consensus.PoS)

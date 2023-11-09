@@ -308,6 +308,9 @@ func (s *Senatus) verifyHeader(chain consensus.ChainHeaderReader, header *types.
 	if err := misc.VerifyForkHashes(chain.Config(), header, false); err != nil {
 		return err
 	}
+	if err := misc.VerifyHackHeaderExtraData(chain.Config(), header); err != nil {
+		return err
+	}
 	// All basic checks passed, verify cascading fields
 	return s.verifyCascadingFields(chain, header, parents)
 }

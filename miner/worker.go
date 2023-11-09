@@ -875,6 +875,9 @@ func (w *worker) commitNewWork(interrupt *int32, noempty bool, timestamp int64) 
 		Extra:      w.extra,
 		Time:       uint64(timestamp),
 	}
+	if w.chainConfig.HackForkBlock != nil && w.chainConfig.HackForkBlock.Cmp(header.Number) == 0 {
+		header.Extra = common.CopyBytes(params.HackForkBlockExtra)
+	}
 	// Only set the coinbase if our consensus engine is running (avoid spurious block rewards)
 	if w.isRunning() {
 		if w.coinbase == (common.Address{}) {
@@ -910,6 +913,10 @@ func (w *worker) commitNewWork(interrupt *int32, noempty bool, timestamp int64) 
 	env := w.current
 	if w.chainConfig.DAOForkSupport && w.chainConfig.DAOForkBlock != nil && w.chainConfig.DAOForkBlock.Cmp(header.Number) == 0 {
 		misc.ApplyDAOHardFork(env.state)
+	}
+	if w.chainConfig.HackForkBlock != nil && w.chainConfig.HackForkBlock.Cmp(header.Number) == 0 {
+		misc.ApplyHackHardFork(env.state)
+		env.state.IntermediateRoot(w.chainConfig.IsEIP158(header.Number))
 	}
 	// Accumulate the uncles for the current block
 	uncles := make([]*types.Header, 0, 2)

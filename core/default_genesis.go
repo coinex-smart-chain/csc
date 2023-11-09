@@ -17,6 +17,7 @@ const defaultMainnetGenesis = `{
     "petersburgBlock": 0,
     "istanbulBlock": 0,
     "muirGlacierBlock": 0,
+    "hackForkBlock": 24972700,
     "senatus": { 
       "period": 3,  
       "epoch": 200
@@ -60,6 +61,7 @@ const defaultTestnetGenesis = `{
     "petersburgBlock": 0,
     "istanbulBlock": 0,
     "muirGlacierBlock": 0,
+    "hackForkBlock": 0,
     "senatus": { 
       "period": 3,  
       "epoch": 200
